@@ -26,20 +26,20 @@ $pdf->SetMargins(10, 10, 10);
 $pdf->startPageNums();
 
 foreach ($country as $countryItem) {
-    $pdf->AddPage();
     $location = $db->Read('location', '*', 'countryId = ' . $countryItem['countryId']);
     $count = 0;
     foreach ($location as $loactionItem) {
         $count++;
     }
     if ($count > 0) {
+        $pdf->AddPage();
         $pdf->TOC_Entry($countryItem['Name']);
         $pdf->SetFont('Times', 'B', 20);
         $pdf->Cell($pdf->GetPageWidth() - 20, 20, $countryItem['Name'], 0, 1);
         $pdf->SetFont('Times', '', 14);
         $pdf->Ln(7.5); // gives a margin between country name and cities
 
-        $pdf->Cell(50, 10, 'Number of location: ' . $count, 1, 1);
+        $pdf->Cell(50, 10, 'Number of location: ' . $count, 0, 1);
         $pdf->Ln(5);
         $pdf->setFillColor(150, 150, 150); // grey
         $pdf->SetFont('Times', 'B', 16);
@@ -120,17 +120,23 @@ foreach ($country as $countryItem) {
 //            $pdf->Cell(100, 15, $objectItem[''], 1, 1);
 
                 list($x1, $y1) = getimagesize($objectItem['picture']);
-                $x2 = 20;
+                $height = 150;
+                $ratio = $y1 / $height;
+                $y = ($x1 / $ratio) / 2;
+                $x2 = 10;
                 $y2 = 70;
                 if (($x1 / $x2) < ($y1 / $y2)) {
                     $y2 = 0;
                 } else {
-                    $x2 = 10;
-//                $COUNT = 0;
+                    $x2 = 0;
                 }
 //                $pdf->Image($objectItem['picture'], $x2, $y2, 0, 120);
-                $pdf->Cell(90, 120, "", 0, 1, 'C',$pdf->Image($objectItem['picture'],$x2,$y2,0,120));
+                $hey = $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image($objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
 
+//                $width = $pdf->ImageWidth($objectItem['picture']);
+//                $pdf->Cell(50, 10, 'hey', 1, 1);
+//                $pdf->Cell(50, 10, $objectItem['picture'], 1, 1);
+//                getimagesize($hey);
             }
         }
     }
