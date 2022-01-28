@@ -28,10 +28,15 @@ $pdf->startPageNums();
 foreach ($country as $countryItem) {
     $location = $db->Read('location', '*', 'countryId = ' . $countryItem['countryId']);
     $count = 0;
-    foreach ($location as $loactionItem) {
+    foreach ($location as $locationItem) {
         $count++;
+        $object = $db->Read('`object` `o` LEFT JOIN `type` `t` ON `o`.`typeId` = `t`.`typeId` LEFT JOIN `picture` `p` ON `o`.`pictureId` = `p`.`pictureId` LEFT JOIN `material` `m` ON `o`.`materialId` = `m`.`materialId`', '*', 'locationId = ' . $locationItem['locationId']);
+        $objectCount = 0;
+        foreach($object as $objectItem) {
+            $objectCount++;
+        }
     }
-    if ($count > 0) {
+    if ($count > 0 && $objectCount > 0) {
         $pdf->AddPage();
         $pdf->TOC_Entry($countryItem['Name']);
         $pdf->SetFont('Times', 'B', 20);
@@ -57,86 +62,84 @@ foreach ($country as $countryItem) {
         }
 
         foreach ($location as $locationItem) {
-            $pdf->AddPage();
+//            $pdf->AddPage();
             $object = $db->Read('`object` `o` LEFT JOIN `type` `t` ON `o`.`typeId` = `t`.`typeId` LEFT JOIN `picture` `p` ON `o`.`pictureId` = `p`.`pictureId` LEFT JOIN `material` `m` ON `o`.`materialId` = `m`.`materialId`', '*', 'locationId = ' . $locationItem['locationId']);
-            $pdf->Cell(200, 15, $locationItem['name'], 1, 1);
-//        $pdf->Cell(200, 15, $locationItem['name'], 1, 1, 'L', 1);
-            $pdf->Ln(11);
-            $pdf->Cell(100, 10, 'LOCATION INFORMATION', 0, 1);
-            $pdf->Ln(11);
-            $pdf->Cell(40, 10, 'LocationCode:');
-            $pdf->Cell(120, 10, $countryItem['landcode'] . '-' . $locationItem['locationId']);
-            $pdf->Ln(10);
-            $pdf->Cell(40, 10, 'Adress:');
-            $pdf->Cell(120, 10, $locationItem['city']);
-            $pdf->cell(null, null, '', 0, 1);
-            $pdf->Ln(20);
-            $pdf->SetFont('Times', 'B', 17);
-            $pdf->Cell(250, 10, 'OBJECTS', 0, 1);
-            $pdf->SetFont('Times', '', 14);
-
-
-            $pdf->Cell(30, 20, 'Code', 1, 0, '', true);
-            $pdf->Cell(70, 20, 'Type', 1, 0, '', true);
-            $pdf->Cell(30, 20, 'Width (in M)', 1, 0, '', true);
-            $pdf->Cell(30, 20, 'Height (in M)', 1, 0, '', true);
-            $pdf->Cell(30, 20, 'Store Section', 1, 0, '', true);
-            $pdf->Cell(60, 20, 'Material', 1, 1, '', true);
+            $objectCount = 0;
             foreach ($object as $objectItem) {
-                $pdf->Cell(30, 10, $countryItem['landcode'] . '-' . $locationItem['locationId'] . ' - ' . $objectItem['objectId'], 1);
-                $pdf->Cell(70, 10, $objectItem['type'], 1);
-                $pdf->Cell(30, 10, $objectItem['width'], 1);
-                $pdf->Cell(30, 10, $objectItem['height'], 1);
-                $pdf->Cell(30, 10, $objectItem['storeSection'], 1);
-                $pdf->Cell(60, 10, $objectItem['material'], 1, 1);
+                $objectCount++;
             }
-
-
-            foreach ($object as $objectItem) {
+            if ($objectCount > 0) {
                 $pdf->AddPage();
-                $pdf->SetFont('Times', '', 25);
-                $pdf->Cell(50, 20, $countryItem['landcode'] . '-' . $locationItem['locationId'] . ' - ' . $objectItem['objectId']);
+                $pdf->Cell(200, 15, $locationItem['name'], 1, 1);
+                $pdf->Ln(11);
+                $pdf->Cell(100, 10, 'LOCATION INFORMATION', 0, 1);
+                $pdf->Ln(11);
+                $pdf->Cell(40, 10, 'LocationCode:');
+                $pdf->Cell(120, 10, $countryItem['landcode'] . '-' . $locationItem['locationId']);
+                $pdf->Ln(10);
+                $pdf->Cell(40, 10, 'Adress:');
+                $pdf->Cell(120, 10, $locationItem['city']);
+                $pdf->cell(null, null, '', 0, 1);
+                $pdf->Ln(20);
+                $pdf->SetFont('Times', 'B', 17);
+                $pdf->Cell(250, 10, 'OBJECTS', 0, 1);
                 $pdf->SetFont('Times', '', 14);
-                $pdf->Cell(25, 10, 'type');
-                $pdf->Cell(80, 10, $objectItem['type']);
-                $pdf->Cell(20, 10, 'Width: ');
-                $pdf->Cell(20, 10, $objectItem['width']);
-                $pdf->Cell(30, 10, 'Store section: ');
-                $pdf->Cell(20, 10, $objectItem['storeSection'], 0, 1);
 
-                $pdf->Cell(50);
-                $pdf->Cell(25, 10, 'material');
-                $pdf->Cell(80, 10, $objectItem['material']);
-                $pdf->Cell(20, 10, 'Height: ');
-                $pdf->Cell(20, 10, $objectItem['height']);
-                $pdf->Cell(30, 10, 'Refresh: ');
-                $pdf->Cell(20, 10, 'null', 0, 1);
 
-//            $pdf->Cell(20, 10, 'testing', 1, 1);
-//            $pdf->Cell(100, 15, $objectItem['picture'], 1, 1);
-                $pdf->Line(10, 40, $pdf->GetPageWidth() - 20, 40);
-//            $pdf->Ln(40);
-//            $pdf->Image($objectItem['picture'], null, null, 200, 112.5);
-//            $pdf->Cell(100, 15, $objectItem[''], 1, 1);
+                $pdf->Cell(30, 20, 'Code', 1, 0, '', true);
+                $pdf->Cell(70, 20, 'Type', 1, 0, '', true);
+                $pdf->Cell(30, 20, 'Width (in M)', 1, 0, '', true);
+                $pdf->Cell(30, 20, 'Height (in M)', 1, 0, '', true);
+                $pdf->Cell(30, 20, 'Store Section', 1, 0, '', true);
+                $pdf->Cell(60, 20, 'Material', 1, 1, '', true);
 
-                list($x1, $y1) = getimagesize($objectItem['picture']);
-                $height = 150;
-                $ratio = $y1 / $height;
-                $y = ($x1 / $ratio) / 2;
-                $x2 = 10;
-                $y2 = 70;
-                if (($x1 / $x2) < ($y1 / $y2)) {
-                    $y2 = 0;
-                } else {
-                    $x2 = 0;
+//            if ($objectCount > 0) {
+
+                foreach ($object as $objectItem) {
+                    $pdf->Cell(30, 10, $countryItem['landcode'] . '-' . $locationItem['locationId'] . ' - ' . $objectItem['objectId'], 1);
+                    $pdf->Cell(70, 10, $objectItem['type'], 1);
+                    $pdf->Cell(30, 10, $objectItem['width'], 1);
+                    $pdf->Cell(30, 10, $objectItem['height'], 1);
+                    $pdf->Cell(30, 10, $objectItem['storeSection'], 1);
+                    $pdf->Cell(60, 10, $objectItem['material'], 1, 1);
                 }
-//                $pdf->Image($objectItem['picture'], $x2, $y2, 0, 120);
-                $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image($objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
 
-//                $width = $pdf->ImageWidth($objectItem['picture']);
-//                $pdf->Cell(50, 10, 'hey', 1, 1);
-//                $pdf->Cell(50, 10, $objectItem['picture'], 1, 1);
-//                getimagesize($hey);
+
+                foreach ($object as $objectItem) {
+                    $pdf->AddPage();
+                    $pdf->SetFont('Times', '', 25);
+                    $pdf->Cell(50, 20, $countryItem['landcode'] . '-' . $locationItem['locationId'] . ' - ' . $objectItem['objectId']);
+                    $pdf->SetFont('Times', '', 14);
+                    $pdf->Cell(25, 10, 'type');
+                    $pdf->Cell(80, 10, $objectItem['type']);
+                    $pdf->Cell(20, 10, 'Width: ');
+                    $pdf->Cell(20, 10, $objectItem['width']);
+                    $pdf->Cell(30, 10, 'Store section: ');
+                    $pdf->Cell(20, 10, $objectItem['storeSection'], 0, 1);
+
+                    $pdf->Cell(50);
+                    $pdf->Cell(25, 10, 'material');
+                    $pdf->Cell(80, 10, $objectItem['material']);
+                    $pdf->Cell(20, 10, 'Height: ');
+                    $pdf->Cell(20, 10, $objectItem['height']);
+                    $pdf->Cell(30, 10, 'Refresh: ');
+                    $pdf->Cell(20, 10, 'null', 0, 1);
+
+                    $pdf->Line(10, 40, $pdf->GetPageWidth() - 20, 40);
+
+                    list($x1, $y1) = getimagesize($objectItem['picture']);
+                    $height = 150;
+                    $ratio = $y1 / $height;
+                    $y = ($x1 / $ratio) / 2;
+                    $x2 = 10;
+                    $y2 = 70;
+                    if (($x1 / $x2) < ($y1 / $y2)) {
+                        $y2 = 0;
+                    } else {
+                        $x2 = 0;
+                    }
+                    $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image($objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
+                }
             }
         }
     }
