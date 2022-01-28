@@ -131,7 +131,7 @@ foreach ($country as $countryItem) {
                     $x2 = 0;
                 }
 //                $pdf->Image($objectItem['picture'], $x2, $y2, 0, 120);
-                $hey = $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image($objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
+                $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image($objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
 
 //                $width = $pdf->ImageWidth($objectItem['picture']);
 //                $pdf->Cell(50, 10, 'hey', 1, 1);
