@@ -25,9 +25,11 @@ $pdf->Image('img/whiteCircle2.jpeg', 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHe
 $pdf->SetMargins(10, 10, 10);
 $pdf->startPageNums();
 
+// counting how many locations there are for every country
 foreach ($country as $countryItem) {
     $location = $db->Read('location', '*', 'countryId = ' . $countryItem['countryId']);
     $count = 0;
+//    counting how many objects there are for every location
     foreach ($location as $locationItem) {
         $count++;
         $object = $db->Read('`object` `o` LEFT JOIN `type` `t` ON `o`.`typeId` = `t`.`typeId` LEFT JOIN `picture` `p` ON `o`.`pictureId` = `p`.`pictureId` LEFT JOIN `material` `m` ON `o`.`materialId` = `m`.`materialId`', '*', 'locationId = ' . $locationItem['locationId']);
@@ -36,6 +38,7 @@ foreach ($country as $countryItem) {
             $objectCount++;
         }
     }
+    //    the index page of the location of a country
     if ($count > 0 && $objectCount > 0) {
         $pdf->AddPage();
         $pdf->TOC_Entry($countryItem['Name']);
@@ -65,9 +68,12 @@ foreach ($country as $countryItem) {
 //            $pdf->AddPage();
             $object = $db->Read('`object` `o` LEFT JOIN `type` `t` ON `o`.`typeId` = `t`.`typeId` LEFT JOIN `picture` `p` ON `o`.`pictureId` = `p`.`pictureId` LEFT JOIN `material` `m` ON `o`.`materialId` = `m`.`materialId`', '*', 'locationId = ' . $locationItem['locationId']);
             $objectCount = 0;
+//            controls how many object a location have
             foreach ($object as $objectItem) {
                 $objectCount++;
             }
+
+//           let see every object that a location has
             if ($objectCount > 0) {
                 $pdf->AddPage();
                 $pdf->Cell(200, 15, $locationItem['name'], 1, 1);
@@ -93,8 +99,6 @@ foreach ($country as $countryItem) {
                 $pdf->Cell(30, 20, 'Store Section', 1, 0, '', true);
                 $pdf->Cell(60, 20, 'Material', 1, 1, '', true);
 
-//            if ($objectCount > 0) {
-
                 foreach ($object as $objectItem) {
                     $pdf->Cell(30, 10, $countryItem['landcode'] . '-' . $locationItem['locationId'] . ' - ' . $objectItem['objectId'], 1);
                     $pdf->Cell(70, 10, $objectItem['type'], 1);
@@ -104,7 +108,7 @@ foreach ($country as $countryItem) {
                     $pdf->Cell(60, 10, $objectItem['material'], 1, 1);
                 }
 
-
+//                All the information that is shown on the object pages
                 foreach ($object as $objectItem) {
                     $pdf->AddPage();
                     $pdf->SetFont('Times', '', 25);
