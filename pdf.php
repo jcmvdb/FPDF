@@ -131,7 +131,7 @@ foreach ($country as $countryItem) {
 
                     $pdf->Line(10, 40, $pdf->GetPageWidth() - 20, 40);
 
-                    list($x1, $y1) = getimagesize($objectItem['picture']);
+                    list($x1, $y1) = getimagesize('img/'.$objectItem['picture']);
                     $height = 150;
                     $ratio = $y1 / $height;
                     $y = ($x1 / $ratio) / 2;
@@ -142,7 +142,7 @@ foreach ($country as $countryItem) {
                     } else {
                         $x2 = 0;
                     }
-                    $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image($objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
+                    $pdf->Cell($pdf->GetPageWidth(), 120, "", 0, 1, 'C', $pdf->Image('img/'.$objectItem['picture'], $pdf->GetPageWidth() / 2 - ($y), 50, 0, $height));
                 }
             }
         }
