@@ -23,6 +23,10 @@ foreach ($json_dataWing as $yourValues) {
     $country[] = $yourValues['Billing address country'];
     $i++;
 }
+
+foreach ($json_dataAssets as $AssetValue) {
+    $assets[] = $AssetValue;
+}
 $yourUniqueCity = array_unique($city);
 $yourUniqueCountry = array_unique($country);
 
@@ -36,10 +40,10 @@ $yourUniqueCountry = array_unique($country);
 // Instanciation of inherited class
 $pdf = new PDF();
 $pdf->AliasNbPages();
-//$pdf->AddPage();
+$pdf->AddPage();
 $pdf->SetFont('Times', '', 12);
 //$pdf->SetMargins(0, 0);
-//$pdf->Image("../img/background.png", 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+$pdf->Image("../img/whiteCircle2.jpeg", 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
 //$pdf->SetMargins(10, 10);
 
 /*****************************************************************************
@@ -87,7 +91,8 @@ foreach ($yourUniqueCountry as $countryItem) {
             foreach ($wing as $wingItem2) {
                 if ($wingItem2['Billing address city'] == $wingItem['Billing address city']) {
 //                    $pdf->AddPage();
-                    $pdf->Cell(50, 10, $wingItem2['Store ID']);
+                    $pdf->Cell(50, 10, $wingItem2['Name'], 0, 1);
+//                    $pdf->Cell(50, 10, $wingItem2['Store ID']);
                 }
             }
 
@@ -98,7 +103,26 @@ foreach ($yourUniqueCountry as $countryItem) {
             foreach ($wing as $wingItem2) {
                 if ($wingItem2['Billing address city'] == $wingItem['Billing address city']) {
                     $pdf->AddPage();
-                    $pdf->Cell(50, 10, $wingItem2['Store ID']);
+                    $pdf->Cell(50, 10, $wingItem2['Name']);
+//                    foreach ($arraytest as $item) {
+                    $pdf->Ln(15);
+                    $pdf->Cell(50, 10, 'Winkel', 1, 1);
+                    foreach ($assets as $item) {
+                        if ($item['Store ID'] == $wingItem2['Store ID']) {
+//                            $pdf->AddPage();
+                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                        }
+                    }
+                    foreach ($assets as $item) {
+                        if ($item['Store ID'] == $wingItem2['Store ID']) {
+                            $pdf->AddPage();
+                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                            $pdf->Cell(25, 10, 'Height', 1);
+                            $pdf->Cell(50, 10, $item['Content height (DisplayUnit)'], 0, 1);
+                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                        }
+                    }
                 }
             }
         }
