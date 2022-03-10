@@ -16,12 +16,10 @@ $jsonAssets = file_get_contents('brandedAssets.json');
 $json_dataWing = json_decode($jsonWing, true);
 $json_dataAssets = json_decode($jsonAssets, true);
 
-$i = 0;
 foreach ($json_dataWing as $yourValues) {
     $wing[] = $yourValues;
     $city[] = $yourValues['Billing address city'];
     $country[] = $yourValues['Billing address country'];
-    $i++;
 }
 
 foreach ($json_dataAssets as $AssetValue) {
@@ -115,14 +113,20 @@ foreach ($yourUniqueCountry as $countryItem) {
                     foreach ($assets as $Assetitem) {
                         if ($Assetitem['Store ID'] == $wingItem2['Store ID']) {
                             $pdf->AddPage();
-                            $pdf->Cell(25, 10, 'Id', 1);
-                            $pdf->Cell(50, 10, $Assetitem['Id'], 0, 1);
-                            $pdf->Cell(25, 10, 'Type', 1);
-                            $pdf->Cell(50, 10, $Assetitem['Type'], 0, 1);
-                            $pdf->Cell(25, 10, 'Height', 1);
-                            $pdf->Cell(50, 10, $Assetitem['Content height (DisplayUnit)'], 0, 1);
-                            $pdf->Cell(25, 10, 'Width', 1);
+                            $pdf->SetFontSize(25);
+                            $pdf->Cell(50, 20,  $Assetitem['Id']);
+                            $pdf->SetFontSize(12);
+                            $pdf->Cell(15, 10, 'Type:');
+                            $pdf->Cell(75, 10, $Assetitem['Type']);
+                            $pdf->Cell(25, 10, 'Width');
                             $pdf->Cell(50, 10, $Assetitem['Content width (DisplayUnit)'], 0, 1);
+                            $pdf->Cell(50);
+                            $pdf->Cell(15, 10, 'Owner');
+                            $pdf->Cell(75, 10, $Assetitem['Owner']);
+                            $pdf->Cell(25, 10, 'Height');
+                            $pdf->Cell(50, 10, $Assetitem['Content height (DisplayUnit)'], 0, 1);
+                            $pdf->Line(10, 40, $pdf->GetPageWidth() - 20, 40);
+
                         }
                     }
                 }
