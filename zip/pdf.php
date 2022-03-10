@@ -36,11 +36,11 @@ $yourUniqueCountry = array_unique($country);
 // Instanciation of inherited class
 $pdf = new PDF();
 $pdf->AliasNbPages();
-$pdf->AddPage();
+//$pdf->AddPage();
 $pdf->SetFont('Times', '', 12);
-$pdf->SetMargins(0, 0);
-$pdf->Image("../img/background.png", 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
-$pdf->SetMargins(10, 10);
+//$pdf->SetMargins(0, 0);
+//$pdf->Image("../img/background.png", 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+//$pdf->SetMargins(10, 10);
 
 /*****************************************************************************
  *                            Country                                      *
@@ -53,7 +53,8 @@ foreach ($yourUniqueCountry as $countryItem) {
     $pdf->Cell($pdf->GetPageWidth() - 20, 20, $countryItem, 1, 1, 'C');
     $pdf->SetFontSize(12);
     $cityArray = array();
-    $pdf->Cell(50, 10, 'LOCATIES', 1, 1);
+    $pdf->Ln(10);
+    $pdf->Cell(50, 10, 'CITIES', 1, 1);
     foreach ($wing as $wingItem) {
         if ($wingItem['Billing address country'] == $countryItem) {
             if (in_array($wingItem['Billing address city'], $cityArray)) {
@@ -67,6 +68,8 @@ foreach ($yourUniqueCountry as $countryItem) {
 
     /*****************************************************************************
      *                               Cities                                    *
+     *                                  &                                      *
+     *                          location summary                               *
      *****************************************************************************/
     $cityArray = array();
     foreach ($wing as $wingItem) {
@@ -79,6 +82,18 @@ foreach ($yourUniqueCountry as $countryItem) {
             $pdf->SetFontSize(20);
             $pdf->Cell(50, 10, $wingItem['Billing address city'], 0, 1);
             $pdf->SetFontSize(12);
+            $pdf->Ln(10);
+            $pdf->Cell(50, 10, 'Locations', 1, 1);
+            foreach ($wing as $wingItem2) {
+                if ($wingItem2['Billing address city'] == $wingItem['Billing address city']) {
+//                    $pdf->AddPage();
+                    $pdf->Cell(50, 10, $wingItem2['Store ID']);
+                }
+            }
+
+            /**************************************************************************
+             *                          information                                   *
+             **************************************************************************/
 
             foreach ($wing as $wingItem2) {
                 if ($wingItem2['Billing address city'] == $wingItem['Billing address city']) {
