@@ -13,7 +13,11 @@ require 'db/db.php';
 ?>
 <a href="pdf.php">PDF</a><br>
 <a href="pdf2.php">PDF2</a><br>
-<a href="excel">Excel</a>
+<a href="pdf4.php">PDF2</a><br>
+<a href="excel">Excel</a><br><br>
+<a href="zip/">Json</a><br>
+<a href="zip/foreachtesting.php">For Each Testing</a><br>
+<a href="zip/pdf.php">JSON PDF</a><br>
 
 <br><br><br>
 <h2>PDF 2</h2>
