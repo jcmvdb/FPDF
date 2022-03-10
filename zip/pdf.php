@@ -106,21 +106,23 @@ foreach ($yourUniqueCountry as $countryItem) {
                     $pdf->Cell(50, 10, $wingItem2['Name']);
 //                    foreach ($arraytest as $item) {
                     $pdf->Ln(15);
-                    $pdf->Cell(50, 10, 'Winkel', 1, 1);
-                    foreach ($assets as $item) {
-                        if ($item['Store ID'] == $wingItem2['Store ID']) {
-//                            $pdf->AddPage();
-                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                    $pdf->Cell(50, 10, 'Assets / objects', 1, 1);
+                    foreach ($assets as $Assetitem) {
+                        if ($Assetitem['Store ID'] == $wingItem2['Store ID']) {
+                            $pdf->Cell(50, 10, $Assetitem['Id'], 0, 1);
                         }
                     }
-                    foreach ($assets as $item) {
-                        if ($item['Store ID'] == $wingItem2['Store ID']) {
+                    foreach ($assets as $Assetitem) {
+                        if ($Assetitem['Store ID'] == $wingItem2['Store ID']) {
                             $pdf->AddPage();
-                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                            $pdf->Cell(25, 10, 'Id', 1);
+                            $pdf->Cell(50, 10, $Assetitem['Id'], 0, 1);
+                            $pdf->Cell(25, 10, 'Type', 1);
+                            $pdf->Cell(50, 10, $Assetitem['Type'], 0, 1);
                             $pdf->Cell(25, 10, 'Height', 1);
-                            $pdf->Cell(50, 10, $item['Content height (DisplayUnit)'], 0, 1);
-                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
-                            $pdf->Cell(50, 10, $item['Id'], 0, 1);
+                            $pdf->Cell(50, 10, $Assetitem['Content height (DisplayUnit)'], 0, 1);
+                            $pdf->Cell(25, 10, 'Width', 1);
+                            $pdf->Cell(50, 10, $Assetitem['Content width (DisplayUnit)'], 0, 1);
                         }
                     }
                 }
