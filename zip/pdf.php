@@ -31,12 +31,16 @@ $yourUniqueCountry = array_unique($country);
  **************************************************************************/
 
 
+
+/** Front Page **/
 // Instanciation of inherited class
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Times', '', 12);
-
+$pdf->SetMargins(0, 0);
+$pdf->Image("../img/background.png", 0, 0, $pdf->GetPageWidth(), $pdf->GetPageHeight());
+$pdf->SetMargins(10, 10);
 
 /*****************************************************************************
  *                            Country                                      *
