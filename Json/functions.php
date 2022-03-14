@@ -3,17 +3,23 @@ require 'fpdf184/fpdf.php';
 
 class PDF_Bookmark extends FPDF
 {
+    function Footer() {
+        //Go to 1.5 cm from bottom
+        $this->SetY(-15);
+        //Select Arial italic 8
+        $this->SetFont('Arial', 'I', 8);
+        $this->Cell(0, 7, $this->PageNo(2), 0, 0, 'R');
+
+//        // Position at 1.5 cm from bottom
+//        $this->SetY(-15);
+//        // Arial italic 8
+//        $this->SetFont('Arial','I',8);
+//        // Page number
+//        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+    }
+
     protected array $outlines = array();
     protected $outlineRoot;
-
-    function Bookmark($txt, $isUTF8 = false, $level = 0, $y = 0)
-    {
-        if (!$isUTF8)
-            $txt = utf8_encode($txt);
-        if ($y == -1)
-            $y = $this->GetY();
-        $this->outlines[] = array('t' => $txt, 'l' => $level, 'y' => ($this->h - $y) * $this->k, 'p' => $this->PageNo());
-    }
 
     function _putbookmarks()
     {
@@ -187,16 +193,17 @@ class PDF extends PDF_Bookmark
             $this->pages[$location + $i] = $last[$i];
     }
 
-    function Footer()
-    {
-        if (!$this->_numberingFooter)
-            return;
-        //Go to 1.5 cm from bottom
-        $this->SetY(-15);
-        //Select Arial italic 8
-        $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 7, $this->numPageNo(), 0, 0, 'R');
-        if (!$this->_numbering)
-            $this->_numberingFooter = false;
+//    function Footer()
+//    {
+//        if (!$this->_numberingFooter) {
+//            return;
+//            //Go to 1.5 cm from bottom
+//            $this->SetY(-15);
+//            //Select Arial italic 8
+//            $this->SetFont('Arial', 'I', 8);
+//            $this->Cell(0, 7, $this->numPageNo(), 0, 0, 'R');
+//            if (!$this->_numbering)
+//                $this->_numberingFooter = false;
+//        }
+//    }
     }
-}
